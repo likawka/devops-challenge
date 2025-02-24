@@ -11,13 +11,6 @@ import (
 	"devops-challenge/handlers"
 )
 
-// @title DevOps Challenge API
-// @version 1.0
-// @description This is a simple API for the DevOps challenge.
-// @host localhost:8080
-// @BasePath /
-
-
 func main() {
 	// Load environment variables
 	err := godotenv.Load()
@@ -43,12 +36,12 @@ func main() {
 	})
 
 	// Define API routes
-	router.GET("/deals", handlers.GetDeals)
-	router.POST("/deals", handlers.CreateDeal)
-	// router.PUT("/deals", handlers.UpdateDeal)
+	apiV1 := router.Group("/v1")
+	{
+		apiV1.GET("/deals", handlers.GetAllDeals)
 
+	}
 
-	// Start server on port 8080
 	log.Println("Server is running on port 8080...")
 	router.Run(":8080")
 }

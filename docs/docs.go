@@ -15,9 +15,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/deals": {
+        "/v1/deals": {
             "get": {
-                "description": "Returns all deals from Pipedrive",
+                "description": "Fetches all deals from Pipedrive",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,33 +30,9 @@ const docTemplate = `{
                 "summary": "Get all deals",
                 "parameters": [
                     {
-                        "type": "string",
-                        "example": "cursor_token",
-                        "name": "cursor",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "custom_field_1,custom_field_2",
-                        "name": "custom_fields",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
-                        "example": 123,
+                        "example": 456,
                         "name": "filter_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "1,2,3",
-                        "name": "ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "next_activity_id,last_activity_id",
-                        "name": "include_fields",
                         "in": "query"
                     },
                     {
@@ -67,175 +43,26 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "example": 101,
-                        "name": "org_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 456,
-                        "name": "owner_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 789,
-                        "name": "person_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 202,
-                        "name": "pipeline_id",
+                        "example": 1,
+                        "name": "owned_by_you",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "example": "update_time",
-                        "name": "sort_by",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "desc",
-                        "name": "sort_direction",
+                        "example": "update_time DESC",
+                        "name": "sort",
                         "in": "query"
                     },
                     {
                         "type": "integer",
-                        "example": 303,
+                        "example": 2,
                         "name": "stage_id",
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "example": "open,winner",
-                        "name": "status",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2025-01-01T10:20:00Z",
-                        "name": "updated_since",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2025-01-02T10:20:00Z",
-                        "name": "updated_until",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/api.GetDealsResponse"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Creates a new deal in Pipedrive using query parameters",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "deals"
-                ],
-                "summary": "Add a new deal",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "add_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "close_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "USD",
-                        "name": "currency",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01",
-                        "name": "expected_close_date",
-                        "in": "query"
-                    },
-                    {
-                        "type": "boolean",
-                        "example": false,
-                        "name": "is_deleted",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "1,2,3",
-                        "name": "label_ids",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "Lost Reason",
-                        "name": "lost_reason",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "lost_time",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
-                        "example": 1,
-                        "name": "org_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "owner_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "person_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "pipeline_id",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "example": 90,
-                        "name": "probability",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "stage_change_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "example": 1,
-                        "name": "stage_id",
+                        "example": 0,
+                        "name": "start",
                         "in": "query"
                     },
                     {
@@ -245,34 +72,9 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "type": "string",
-                        "example": "Deal Title",
-                        "name": "title",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "update_time",
-                        "in": "query"
-                    },
-                    {
-                        "type": "number",
-                        "example": 200.5,
-                        "name": "value",
-                        "in": "query"
-                    },
-                    {
                         "type": "integer",
-                        "example": 7,
-                        "name": "visible_to",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "example": "2021-01-01T00:00:00Z",
-                        "name": "won_time",
+                        "example": 123,
+                        "name": "user_id",
                         "in": "query"
                     }
                 ],
@@ -280,7 +82,25 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/api.CreateDealResponse"
+                            "$ref": "#/definitions/api.GetAllDealsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -288,21 +108,185 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "api.CreateDealResponse": {
+        "api.Deal": {
             "type": "object",
             "properties": {
-                "data": {},
-                "success": {
+                "active": {
                     "type": "boolean",
                     "example": true
+                },
+                "activities_count": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "acv_currency": {
+                    "type": "string",
+                    "example": "EUR"
+                },
+                "add_time": {
+                    "type": "string",
+                    "example": "2019-05-29 04:21:51"
+                },
+                "arr_currency": {
+                    "type": "string",
+                    "example": "EUR"
+                },
+                "channel": {
+                    "type": "integer"
+                },
+                "channel_id": {
+                    "type": "string"
+                },
+                "close_time": {
+                    "type": "string"
+                },
+                "currency": {
+                    "type": "string",
+                    "example": "EUR"
+                },
+                "deleted": {
+                    "type": "boolean",
+                    "example": false
+                },
+                "done_activities_count": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "email_messages_count": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "expected_close_date": {
+                    "type": "string",
+                    "example": "2019-06-29"
+                },
+                "files_count": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "first_won_time": {
+                    "type": "string"
+                },
+                "followers_count": {
+                    "type": "integer",
+                    "example": 0
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "label": {
+                    "type": "string",
+                    "example": "11"
+                },
+                "last_activity_date": {
+                    "type": "string"
+                },
+                "last_activity_id": {
+                    "type": "integer"
+                },
+                "last_incoming_mail_time": {
+                    "type": "string"
+                },
+                "last_outgoing_mail_time": {
+                    "type": "string"
+                },
+                "lost_reason": {
+                    "type": "string"
+                },
+                "lost_time": {
+                    "type": "string"
+                },
+                "mrr": {
+                    "type": "number"
+                },
+                "mrr_currency": {
+                    "type": "string",
+                    "example": "EUR"
+                },
+                "next_activity_date": {
+                    "type": "string",
+                    "example": "2019-11-29"
+                },
+                "next_activity_id": {
+                    "type": "integer"
+                },
+                "next_activity_time": {
+                    "type": "string",
+                    "example": "11:30:00"
+                },
+                "notes_count": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "origin": {
+                    "type": "string",
+                    "example": "ManuallyCreated"
+                },
+                "participants_count": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "pipeline_id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "probability": {
+                    "type": "integer"
+                },
+                "products_count": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "stage_change_time": {
+                    "type": "string",
+                    "example": "2019-11-28 15:41:22"
+                },
+                "stage_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "stage_order_nr": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "open"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Deal One"
+                },
+                "undone_activities_count": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "update_time": {
+                    "type": "string",
+                    "example": "2019-11-28 16:19:50"
+                },
+                "value": {
+                    "type": "number",
+                    "example": 130
+                },
+                "visible_to": {
+                    "type": "string",
+                    "example": "1"
+                },
+                "won_time": {
+                    "type": "string"
                 }
             }
         },
-        "api.GetDealsResponse": {
+        "api.GetAllDealsResponse": {
             "type": "object",
             "properties": {
-                "additional_data": {},
-                "data": {},
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/api.Deal"
+                    }
+                },
                 "success": {
                     "type": "boolean",
                     "example": true
@@ -314,12 +298,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
-	Host:             "localhost:8080",
-	BasePath:         "/",
+	Version:          "",
+	Host:             "",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "DevOps Challenge API",
-	Description:      "This is a simple API for the DevOps challenge.",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

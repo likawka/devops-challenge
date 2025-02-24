@@ -1,55 +1,65 @@
 package api
 
-type GetDealsParams struct {
-	FilterID      *int   `form:"filter_id" example:"123"`
-	IDs           string `form:"ids" example:"1,2,3"`
-	OwnerID       *int   `form:"owner_id" example:"456"`
-	PersonID      *int   `form:"person_id" example:"789"`
-	OrgID         *int   `form:"org_id" example:"101"`
-	PipelineID    *int   `form:"pipeline_id" example:"202"`
-	StageID       *int   `form:"stage_id" example:"303"`
-	Status        string `form:"status" example:"open,winner"`
-	UpdatedSince  string `form:"updated_since" example:"2025-01-01T10:20:00Z"`
-	UpdatedUntil  string `form:"updated_until" example:"2025-01-02T10:20:00Z"`
-	SortBy        string `form:"sort_by" example:"update_time"`
-	SortDirection string `form:"sort_direction" example:"desc"`
-	IncludeFields string `form:"include_fields" example:"next_activity_id,last_activity_id"`
-	CustomFields  string `form:"custom_fields" example:"custom_field_1,custom_field_2"`
-	Limit         *int   `form:"limit" example:"100"`
-	Cursor        string `form:"cursor" example:"cursor_token"`
+type GetAllDealsParams struct {
+	UserID     *int   `form:"user_id" example:"123"`
+	FilterID   *int   `form:"filter_id" example:"456"`
+	StageID    *int   `form:"stage_id" example:"2"`
+	Status     string `form:"status" example:"open"`
+	Start      *int   `form:"start" example:"0"`
+	Limit      *int   `form:"limit" example:"100"`
+	Sort       string `form:"sort" example:"update_time DESC"`
+	OwnedByYou *int   `form:"owned_by_you" example:"1"`
 }
 
-type GetDealsResponse struct {
-	Success        bool        `json:"success" example:"true"`
-	Data           interface{} `json:"data"`
-	AdditionalData interface{} `json:"additional_data"`
+type Deal struct {
+	ID                    int      `json:"id" example:"1"`
+	StageID               int      `json:"stage_id" example:"2"`
+	Title                 string   `json:"title" example:"Deal One"`
+	Value                 float64  `json:"value" example:"130"`
+	Currency              string   `json:"currency" example:"EUR"`
+	AddTime               string   `json:"add_time" example:"2019-05-29 04:21:51"`
+	UpdateTime            string   `json:"update_time" example:"2019-11-28 16:19:50"`
+	StageChangeTime       string   `json:"stage_change_time" example:"2019-11-28 15:41:22"`
+	Active                bool     `json:"active" example:"true"`
+	Deleted               bool     `json:"deleted" example:"false"`
+	Status                string   `json:"status" example:"open"`
+	Probability           *int     `json:"probability,omitempty"`
+	NextActivityDate      string   `json:"next_activity_date" example:"2019-11-29"`
+	NextActivityTime      string   `json:"next_activity_time" example:"11:30:00"`
+	NextActivityID        *int     `json:"next_activity_id,omitempty"`
+	LastActivityID        *int     `json:"last_activity_id,omitempty"`
+	LastActivityDate      *string  `json:"last_activity_date,omitempty"`
+	LostReason            *string  `json:"lost_reason,omitempty"`
+	VisibleTo             string   `json:"visible_to" example:"1"`
+	CloseTime             *string  `json:"close_time,omitempty"`
+	PipelineID            int      `json:"pipeline_id" example:"1"`
+	WonTime               *string  `json:"won_time,omitempty"`
+	FirstWonTime          *string  `json:"first_won_time,omitempty"`
+	LostTime              *string  `json:"lost_time,omitempty"`
+	ProductsCount         int      `json:"products_count" example:"2"`
+	FilesCount            int      `json:"files_count" example:"0"`
+	NotesCount            int      `json:"notes_count" example:"2"`
+	FollowersCount        int      `json:"followers_count" example:"0"`
+	EmailMessagesCount    int      `json:"email_messages_count" example:"4"`
+	ActivitiesCount       int      `json:"activities_count" example:"1"`
+	DoneActivitiesCount   int      `json:"done_activities_count" example:"0"`
+	UndoneActivitiesCount int      `json:"undone_activities_count" example:"1"`
+	ParticipantsCount     int      `json:"participants_count" example:"1"`
+	ExpectedCloseDate     string   `json:"expected_close_date" example:"2019-06-29"`
+	LastIncomingMailTime  *string  `json:"last_incoming_mail_time,omitempty"`
+	LastOutgoingMailTime  *string  `json:"last_outgoing_mail_time,omitempty"`
+	Label                 string   `json:"label" example:"11"`
+	Origin                string   `json:"origin" example:"ManuallyCreated"`
+	Channel               *int     `json:"channel,omitempty"`
+	ChannelID             *string  `json:"channel_id,omitempty"`
+	StageOrderNr          *int     `json:"stage_order_nr,omitempty"`
+	MRR                   *float64 `json:"mrr,omitempty"`
+	ACVCurrency           string   `json:"acv_currency" example:"EUR"`
+	ARRCurrency           string   `json:"arr_currency" example:"EUR"`
+	MRRCurrency           string   `json:"mrr_currency" example:"EUR"`
 }
 
-type CreateDealParams struct {
-	Title             string   `form:"title" binding:"required" example:"Deal Title"`
-	OwnerID           *int     `form:"owner_id" example:"1"`
-	PersonID          *int     `form:"person_id" example:"1"`
-	OrgID             *int     `form:"org_id" example:"1"`
-	PipelineID        *int     `form:"pipeline_id" example:"1"`
-	StageID           *int     `form:"stage_id" example:"1"`
-	Value             *float64 `form:"value" example:"200.5"`
-	Currency          string   `form:"currency" example:"USD"`
-	AddTime           string   `form:"add_time" example:"2021-01-01T00:00:00Z"`
-	UpdateTime        string   `form:"update_time" example:"2021-01-01T00:00:00Z"`
-	StageChangeTime   string   `form:"stage_change_time" example:"2021-01-01T00:00:00Z"`
-	IsDeleted         *bool    `form:"is_deleted" example:"false"`
-	Status            string   `form:"status" example:"open"`
-	Probability       *float64 `form:"probability" example:"90"`
-	LostReason        string   `form:"lost_reason" example:"Lost Reason"`
-	VisibleTo         *int     `form:"visible_to" example:"7"`
-	CloseTime         string   `form:"close_time" example:"2021-01-01T00:00:00Z"`
-	WonTime           string   `form:"won_time" example:"2021-01-01T00:00:00Z"`
-	LostTime          string   `form:"lost_time" example:"2021-01-01T00:00:00Z"`
-	ExpectedCloseDate string   `form:"expected_close_date" example:"2021-01-01"`
-	LabelIDs          string   `form:"label_ids" example:"1,2,3"`
-}
-
-type CreateDealResponse struct {
-	Success bool        `json:"success" example:"true"`
-	Data    interface{} `json:"data"`
+type GetAllDealsResponse struct {
+	Success bool   `json:"success" example:"true"`
+	Data    []Deal `json:"data"`
 }

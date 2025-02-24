@@ -1,205 +1,198 @@
-basePath: /
 definitions:
-  api.CreateDealResponse:
+  api.Deal:
     properties:
-      data: {}
+      active:
+        example: true
+        type: boolean
+      activities_count:
+        example: 1
+        type: integer
+      acv_currency:
+        example: EUR
+        type: string
+      add_time:
+        example: "2019-05-29 04:21:51"
+        type: string
+      arr_currency:
+        example: EUR
+        type: string
+      channel:
+        type: integer
+      channel_id:
+        type: string
+      close_time:
+        type: string
+      currency:
+        example: EUR
+        type: string
+      deleted:
+        example: false
+        type: boolean
+      done_activities_count:
+        example: 0
+        type: integer
+      email_messages_count:
+        example: 4
+        type: integer
+      expected_close_date:
+        example: "2019-06-29"
+        type: string
+      files_count:
+        example: 0
+        type: integer
+      first_won_time:
+        type: string
+      followers_count:
+        example: 0
+        type: integer
+      id:
+        example: 1
+        type: integer
+      label:
+        example: "11"
+        type: string
+      last_activity_date:
+        type: string
+      last_activity_id:
+        type: integer
+      last_incoming_mail_time:
+        type: string
+      last_outgoing_mail_time:
+        type: string
+      lost_reason:
+        type: string
+      lost_time:
+        type: string
+      mrr:
+        type: number
+      mrr_currency:
+        example: EUR
+        type: string
+      next_activity_date:
+        example: "2019-11-29"
+        type: string
+      next_activity_id:
+        type: integer
+      next_activity_time:
+        example: "11:30:00"
+        type: string
+      notes_count:
+        example: 2
+        type: integer
+      origin:
+        example: ManuallyCreated
+        type: string
+      participants_count:
+        example: 1
+        type: integer
+      pipeline_id:
+        example: 1
+        type: integer
+      probability:
+        type: integer
+      products_count:
+        example: 2
+        type: integer
+      stage_change_time:
+        example: "2019-11-28 15:41:22"
+        type: string
+      stage_id:
+        example: 2
+        type: integer
+      stage_order_nr:
+        type: integer
+      status:
+        example: open
+        type: string
+      title:
+        example: Deal One
+        type: string
+      undone_activities_count:
+        example: 1
+        type: integer
+      update_time:
+        example: "2019-11-28 16:19:50"
+        type: string
+      value:
+        example: 130
+        type: number
+      visible_to:
+        example: "1"
+        type: string
+      won_time:
+        type: string
+    type: object
+  api.GetAllDealsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/api.Deal'
+        type: array
       success:
         example: true
         type: boolean
     type: object
-  api.GetDealsResponse:
-    properties:
-      additional_data: {}
-      data: {}
-      success:
-        example: true
-        type: boolean
-    type: object
-host: localhost:8080
 info:
   contact: {}
-  description: This is a simple API for the DevOps challenge.
-  title: DevOps Challenge API
-  version: "1.0"
 paths:
-  /deals:
+  /v1/deals:
     get:
       consumes:
       - application/json
-      description: Returns all deals from Pipedrive
+      description: Fetches all deals from Pipedrive
       parameters:
-      - example: cursor_token
-        in: query
-        name: cursor
-        type: string
-      - example: custom_field_1,custom_field_2
-        in: query
-        name: custom_fields
-        type: string
-      - example: 123
+      - example: 456
         in: query
         name: filter_id
         type: integer
-      - example: 1,2,3
-        in: query
-        name: ids
-        type: string
-      - example: next_activity_id,last_activity_id
-        in: query
-        name: include_fields
-        type: string
       - example: 100
         in: query
         name: limit
         type: integer
-      - example: 101
+      - example: 1
         in: query
-        name: org_id
+        name: owned_by_you
         type: integer
-      - example: 456
+      - example: update_time DESC
         in: query
-        name: owner_id
-        type: integer
-      - example: 789
-        in: query
-        name: person_id
-        type: integer
-      - example: 202
-        in: query
-        name: pipeline_id
-        type: integer
-      - example: update_time
-        in: query
-        name: sort_by
+        name: sort
         type: string
-      - example: desc
-        in: query
-        name: sort_direction
-        type: string
-      - example: 303
+      - example: 2
         in: query
         name: stage_id
         type: integer
-      - example: open,winner
+      - example: 0
         in: query
-        name: status
-        type: string
-      - example: "2025-01-01T10:20:00Z"
-        in: query
-        name: updated_since
-        type: string
-      - example: "2025-01-02T10:20:00Z"
-        in: query
-        name: updated_until
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/api.GetDealsResponse'
-      summary: Get all deals
-      tags:
-      - deals
-    post:
-      consumes:
-      - application/json
-      description: Creates a new deal in Pipedrive using query parameters
-      parameters:
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: add_time
-        type: string
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: close_time
-        type: string
-      - example: USD
-        in: query
-        name: currency
-        type: string
-      - example: "2021-01-01"
-        in: query
-        name: expected_close_date
-        type: string
-      - example: false
-        in: query
-        name: is_deleted
-        type: boolean
-      - example: 1,2,3
-        in: query
-        name: label_ids
-        type: string
-      - example: Lost Reason
-        in: query
-        name: lost_reason
-        type: string
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: lost_time
-        type: string
-      - example: 1
-        in: query
-        name: org_id
-        type: integer
-      - example: 1
-        in: query
-        name: owner_id
-        type: integer
-      - example: 1
-        in: query
-        name: person_id
-        type: integer
-      - example: 1
-        in: query
-        name: pipeline_id
-        type: integer
-      - example: 90
-        in: query
-        name: probability
-        type: number
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: stage_change_time
-        type: string
-      - example: 1
-        in: query
-        name: stage_id
+        name: start
         type: integer
       - example: open
         in: query
         name: status
         type: string
-      - example: Deal Title
+      - example: 123
         in: query
-        name: title
-        required: true
-        type: string
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: update_time
-        type: string
-      - example: 200.5
-        in: query
-        name: value
-        type: number
-      - example: 7
-        in: query
-        name: visible_to
+        name: user_id
         type: integer
-      - example: "2021-01-01T00:00:00Z"
-        in: query
-        name: won_time
-        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/api.CreateDealResponse'
-      summary: Add a new deal
+            $ref: '#/definitions/api.GetAllDealsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all deals
       tags:
       - deals
 swagger: "2.0"
