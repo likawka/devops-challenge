@@ -44,7 +44,7 @@ func main() {
 
 	// Define API routes
 	router.GET("/deals", handlers.GetDeals)
-	// router.POST("/deals", handlers.CreateDeal)
+	router.POST("/deals", handlers.CreateDeal)
 	// router.PUT("/deals", handlers.UpdateDeal)
 
 

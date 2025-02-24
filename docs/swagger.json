@@ -126,23 +126,155 @@
                         "schema": {
                             "$ref": "#/definitions/api.GetDealsResponse"
                         }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new deal in Pipedrive using query parameters",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "deals"
+                ],
+                "summary": "Add a new deal",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "add_time",
+                        "in": "query"
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
-                        }
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "close_time",
+                        "in": "query"
                     },
-                    "500": {
-                        "description": "Internal Server Error",
+                    {
+                        "type": "string",
+                        "example": "USD",
+                        "name": "currency",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2021-01-01",
+                        "name": "expected_close_date",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "example": false,
+                        "name": "is_deleted",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "1,2,3",
+                        "name": "label_ids",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Lost Reason",
+                        "name": "lost_reason",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "lost_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "org_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "owner_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "person_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "pipeline_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 90,
+                        "name": "probability",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "stage_change_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 1,
+                        "name": "stage_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "open",
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "Deal Title",
+                        "name": "title",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "update_time",
+                        "in": "query"
+                    },
+                    {
+                        "type": "number",
+                        "example": 200.5,
+                        "name": "value",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "example": 7,
+                        "name": "visible_to",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "2021-01-01T00:00:00Z",
+                        "name": "won_time",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/api.CreateDealResponse"
                         }
                     }
                 }
@@ -150,27 +282,26 @@
         }
     },
     "definitions": {
-        "api.GetDealsResponse": {
+        "api.CreateDealResponse": {
             "type": "object",
             "properties": {
-                "additional_data": {
-                    "description": "Additional metadata"
-                },
-                "data": {
-                    "description": "Deals data from Pipedrive"
-                },
+                "data": {},
                 "success": {
                     "type": "boolean",
                     "example": true
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "BearerAuth": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
+        },
+        "api.GetDealsResponse": {
+            "type": "object",
+            "properties": {
+                "additional_data": {},
+                "data": {},
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
         }
     }
 }
