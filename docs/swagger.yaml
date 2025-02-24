@@ -1,11 +1,114 @@
 basePath: /
+definitions:
+  api.GetDealsResponse:
+    properties:
+      additional_data:
+        description: Additional metadata
+      data:
+        description: Deals data from Pipedrive
+      success:
+        example: true
+        type: boolean
+    type: object
 host: localhost:8080
 info:
   contact: {}
   description: This is a simple API for the DevOps challenge.
   title: DevOps Challenge API
   version: "1.0"
-paths: {}
+paths:
+  /deals:
+    get:
+      consumes:
+      - application/json
+      description: Returns all deals from Pipedrive
+      parameters:
+      - example: cursor_token
+        in: query
+        name: cursor
+        type: string
+      - example: custom_field_1,custom_field_2
+        in: query
+        name: custom_fields
+        type: string
+      - example: 123
+        in: query
+        name: filter_id
+        type: integer
+      - example: 1,2,3
+        in: query
+        name: ids
+        type: string
+      - example: next_activity_id,last_activity_id
+        in: query
+        name: include_fields
+        type: string
+      - example: 100
+        in: query
+        name: limit
+        type: integer
+      - example: 101
+        in: query
+        name: org_id
+        type: integer
+      - example: 456
+        in: query
+        name: owner_id
+        type: integer
+      - example: 789
+        in: query
+        name: person_id
+        type: integer
+      - example: 202
+        in: query
+        name: pipeline_id
+        type: integer
+      - example: update_time
+        in: query
+        name: sort_by
+        type: string
+      - example: desc
+        in: query
+        name: sort_direction
+        type: string
+      - example: 303
+        in: query
+        name: stage_id
+        type: integer
+      - example: open,winner
+        in: query
+        name: status
+        type: string
+      - example: "2025-01-01T10:20:00Z"
+        in: query
+        name: updated_since
+        type: string
+      - example: "2025-01-02T10:20:00Z"
+        in: query
+        name: updated_until
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.GetDealsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all deals
+      tags:
+      - deals
 securityDefinitions:
   BearerAuth:
     in: header

@@ -1,77 +1,55 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"os"
+
+	"devops-challenge/api"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 )
 
-var apiToken = os.Getenv("PIPEDRIVE_API_KEY")
-var pipedriveAPI = "https://api.pipedrive.com/v1/deals"
-
-// Fetch all deals
+// GetDeals godoc
+// @Summary Get all deals
+// @Description Returns all deals from Pipedrive
+// @Tags deals
+// @Accept json
+// @Produce json
+// @Param params query api.GetDealsParams false "Query parameters for filtering deals"
+// @Success 200 {object} api.GetDealsResponse
+// @Router /deals [get]
 func GetDeals(c *gin.Context) {
+	var queryParams api.GetDealsParams
+	if err := c.ShouldBindQuery(&queryParams); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid query parameters"})
+		return
+	}
+
 	client := resty.New()
 	resp, err := client.R().
-		SetQueryParam("api_token", apiToken).
-		Get(pipedriveAPI)
+		SetQueryParam("api_token", os.Getenv("PIPEDRIVE_API_KEY")).
+		SetQueryParamsFromValues(c.Request.URL.Query()).
+		Get("https://api.pipedrive.com/v1/deals")
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"deals": resp.String()})
-}
-
-// Create a new deal
-func CreateDeal(c *gin.Context) {
-	var deal map[string]interface{}
-	if err := c.ShouldBindJSON(&deal); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+	var pipedriveResponse map[string]interface{}
+	if err := json.Unmarshal(resp.Body(), &pipedriveResponse); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse response"})
 		return
 	}
 
-	client := resty.New()
-	resp, err := client.R().
-		SetQueryParam("api_token", apiToken).
-		SetBody(deal).
-		Post(pipedriveAPI)
 
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+	formattedResponse := api.GetDealsResponse{
+		Success:        true,
+		Data:           pipedriveResponse["data"],
+		AdditionalData: pipedriveResponse["additional_data"],
 	}
 
-	c.JSON(http.StatusOK, gin.H{"response": resp.String()})
-}
-
-// Update an existing deal
-func UpdateDeal(c *gin.Context) {
-	dealID := c.Query("id")
-	if dealID == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Deal ID is required"})
-		return
-	}
-
-	var deal map[string]interface{}
-	if err := c.ShouldBindJSON(&deal); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return
-	}
-
-	client := resty.New()
-	resp, err := client.R().
-		SetQueryParam("api_token", apiToken).
-		SetBody(deal).
-		Put(pipedriveAPI + "/" + dealID)
-
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"response": resp.String()})
+	c.JSON(http.StatusOK, formattedResponse)
 }

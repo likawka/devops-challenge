@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 
-	_ "devops-challenge/docs" // Import generated docs
+	_ "devops-challenge/docs"
 	"devops-challenge/handlers"
 )
 
@@ -17,9 +17,6 @@ import (
 // @host localhost:8080
 // @BasePath /
 
-// @securityDefinitions.apiKey BearerAuth
-// @in header
-// @name Authorization
 
 func main() {
 	// Load environment variables
@@ -47,9 +44,9 @@ func main() {
 
 	// Define API routes
 	router.GET("/deals", handlers.GetDeals)
-	router.POST("/deals", handlers.CreateDeal)
-	router.PUT("/deals", handlers.UpdateDeal)
-	
+	// router.POST("/deals", handlers.CreateDeal)
+	// router.PUT("/deals", handlers.UpdateDeal)
+
 
 	// Start server on port 8080
 	log.Println("Server is running on port 8080...")
