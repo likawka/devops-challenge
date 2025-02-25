@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 
@@ -64,4 +65,54 @@ func GetAllDeals(c *gin.Context) {
 		Success: true,
 		Data:    deals,
 	})
+}
+
+// CreateDeal godoc
+// @Summary Add a new deal
+// @Description Creates a new deal in Pipedrive
+// @Tags deals
+// @Accept json
+// @Produce json
+// @Param deal body api.CreateDealRequest true "Deal data to be created. Required fields: title"
+// @Success 201 {object} api.CreateDealResponse
+// @Router /v1/deals [post]
+func CreateDeal(c *gin.Context) {
+	var dealRequest api.CreateDealRequest
+	if err := c.ShouldBindJSON(&dealRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	client := resty.New()
+	resp, err := client.R().
+		SetHeader("Content-Type", "application/json").
+		SetQueryParam("api_token", os.Getenv("PIPEDRIVE_API_KEY")).
+		SetBody(dealRequest).
+		Post("https://api.pipedrive.com/v1/deals")
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	fmt.Println("Pipedrive Response:", resp.String())
+
+	var pipedriveResponse map[string]interface{}
+	if err := json.Unmarshal(resp.Body(), &pipedriveResponse); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse response"})
+		return
+	}
+
+	data, exists := pipedriveResponse["data"]
+	if !exists || data == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Pipedrive returned null data", "response": pipedriveResponse})
+		return
+	}
+
+	formattedResponse := api.CreateDealResponse{
+		Success: true,
+		Data:    data,
+	}
+
+	c.JSON(http.StatusCreated, formattedResponse)
 }

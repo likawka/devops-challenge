@@ -39,6 +39,7 @@ func main() {
 	apiV1 := router.Group("/v1")
 	{
 		apiV1.GET("/deals", handlers.GetAllDeals)
+		apiV1.POST("/deals", handlers.CreateDeal)
 
 	}
 

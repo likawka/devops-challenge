@@ -84,23 +84,37 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/api.GetAllDealsResponse"
                         }
-                    },
-                    "400": {
-                        "description": "Bad Request",
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new deal in Pipedrive",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "deals"
+                ],
+                "summary": "Add a new deal",
+                "parameters": [
+                    {
+                        "description": "Deal data to be created. Required fields: title",
+                        "name": "deal",
+                        "in": "body",
+                        "required": true,
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/api.CreateDealRequest"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/api.CreateDealResponse"
                         }
                     }
                 }
@@ -108,6 +122,19 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "api.CreateDealRequest": {
+            "type": "object"
+        },
+        "api.CreateDealResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
         "api.Deal": {
             "type": "object",
             "properties": {

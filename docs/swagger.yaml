@@ -1,4 +1,13 @@
 definitions:
+  api.CreateDealRequest:
+    type: object
+  api.CreateDealResponse:
+    properties:
+      data: {}
+      success:
+        example: true
+        type: boolean
+    type: object
   api.Deal:
     properties:
       active:
@@ -180,19 +189,28 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/api.GetAllDealsResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       summary: Get all deals
+      tags:
+      - deals
+    post:
+      consumes:
+      - application/json
+      description: Creates a new deal in Pipedrive
+      parameters:
+      - description: 'Deal data to be created. Required fields: title'
+        in: body
+        name: deal
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateDealRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/api.CreateDealResponse'
+      summary: Add a new deal
       tags:
       - deals
 swagger: "2.0"

@@ -63,3 +63,31 @@ type GetAllDealsResponse struct {
 	Success bool   `json:"success" example:"true"`
 	Data    []Deal `json:"data"`
 }
+
+type CreateDealRequest struct {
+	Title             string   `json:"title" binding:"required" example:"Deal One"`
+	Label             []int    `json:"label,omitempty" example:"[1,2,3]"`
+	Currency          string   `json:"currency,omitempty" example:"USD"`
+	UserID            *int     `json:"user_id,omitempty" example:"1"`
+	PersonID          *int     `json:"person_id,omitempty" example:"2"`
+	OrgID             *int     `json:"org_id,omitempty" example:"3"`
+	PipelineID        *int     `json:"pipeline_id,omitempty" example:"1"`
+	StageID           *int     `json:"stage_id,omitempty" example:"2"`
+	Status            string   `json:"status,omitempty" example:"open"`
+	OriginID          *string  `json:"origin_id,omitempty" example:"Zapier"`
+	Channel           *int     `json:"channel,omitempty" example:"16"`
+	ChannelID         *string  `json:"channel_id,omitempty" example:"string"`
+	AddTime           *string  `json:"add_time,omitempty" example:"2025-01-01 12:00:00"`
+	WonTime           *string  `json:"won_time,omitempty" example:"2025-01-02 12:00:00"`
+	LostTime          *string  `json:"lost_time,omitempty" example:"2025-01-03 12:00:00"`
+	CloseTime         *string  `json:"close_time,omitempty" example:"2025-01-04 12:00:00"`
+	ExpectedCloseDate *string  `json:"expected_close_date,omitempty" example:"2025-01-10"`
+	Probability       *float64 `json:"probability,omitempty" example:"80.5"`
+	LostReason        *string  `json:"lost_reason,omitempty" example:"Customer went with another vendor"`
+	VisibleTo         *int     `json:"visible_to,omitempty" example:"1"`
+}
+
+type CreateDealResponse struct {
+	Success bool        `json:"success" example:"true"`
+	Data    interface{} `json:"data"`
+}
