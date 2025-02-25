@@ -1,20 +1,12 @@
-# Use an official Golang runtime as a parent image
-FROM golang:1.17-alpine
-
-# Set the working directory in the container
+# Build stage
+FROM golang:1.21 AS builder
 WORKDIR /app
+COPY . .
+RUN GOOS=linux GOARCH=amd64 go build -o main .
 
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Download and install any needed dependencies
-RUN go mod download
-
-# Build the Go app
-RUN go build -o main .
-
-# Make port 80 available to the world outside this container
-EXPOSE 80
-
-# Run the executable when the container launches
+# Runtime stage
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=builder /app/main .
+RUN chmod +x ./main
 CMD ["./main"]
