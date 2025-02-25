@@ -119,6 +119,47 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/deals/{id}": {
+            "put": {
+                "description": "Updates an existing deal in Pipedrive",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "deals"
+                ],
+                "summary": "Update an existing deal",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Deal ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Deal data to update. Optional fields can be omitted.",
+                        "name": "deal",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/api.UpdateDealRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.UpdateDealResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -314,6 +355,19 @@ const docTemplate = `{
                         "$ref": "#/definitions/api.Deal"
                     }
                 },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "api.UpdateDealRequest": {
+            "type": "object"
+        },
+        "api.UpdateDealResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
                 "success": {
                     "type": "boolean",
                     "example": true

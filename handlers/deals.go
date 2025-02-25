@@ -116,3 +116,60 @@ func CreateDeal(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, formattedResponse)
 }
+
+// UpdateDeal godoc
+// @Summary Update an existing deal
+// @Description Updates an existing deal in Pipedrive
+// @Tags deals
+// @Accept json
+// @Produce json
+// @Param id path int true "Deal ID"
+// @Param deal body api.UpdateDealRequest true "Deal data to update. Optional fields can be omitted."
+// @Success 200 {object} api.UpdateDealResponse
+// @Router /v1/deals/{id} [put]
+func UpdateDeal(c *gin.Context) {
+	dealID := c.Param("id")
+	if dealID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Deal ID is required"})
+		return
+	}
+
+	var dealRequest api.UpdateDealRequest
+	if err := c.ShouldBindJSON(&dealRequest); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	client := resty.New()
+	resp, err := client.R().
+		SetHeader("Content-Type", "application/json").
+		SetQueryParam("api_token", os.Getenv("PIPEDRIVE_API_KEY")).
+		SetBody(dealRequest).
+		Put(fmt.Sprintf("https://api.pipedrive.com/v1/deals/%s", dealID))
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	fmt.Println("Pipedrive Response:", resp.String())
+
+	var pipedriveResponse map[string]interface{}
+	if err := json.Unmarshal(resp.Body(), &pipedriveResponse); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse response"})
+		return
+	}
+
+	data, exists := pipedriveResponse["data"]
+	if !exists || data == nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Pipedrive returned null data", "response": pipedriveResponse})
+		return
+	}
+
+	formattedResponse := api.UpdateDealResponse{
+		Success: true,
+		Data:    data,
+	}
+
+	c.JSON(http.StatusOK, formattedResponse)
+}

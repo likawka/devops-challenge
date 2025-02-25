@@ -40,7 +40,7 @@ func main() {
 	{
 		apiV1.GET("/deals", handlers.GetAllDeals)
 		apiV1.POST("/deals", handlers.CreateDeal)
-
+		apiV1.PUT("/deals/:id", handlers.UpdateDeal)
 	}
 
 	log.Println("Server is running on port 8080...")

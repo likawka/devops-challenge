@@ -141,6 +141,15 @@ definitions:
         example: true
         type: boolean
     type: object
+  api.UpdateDealRequest:
+    type: object
+  api.UpdateDealResponse:
+    properties:
+      data: {}
+      success:
+        example: true
+        type: boolean
+    type: object
 info:
   contact: {}
 paths:
@@ -211,6 +220,33 @@ paths:
           schema:
             $ref: '#/definitions/api.CreateDealResponse'
       summary: Add a new deal
+      tags:
+      - deals
+  /v1/deals/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing deal in Pipedrive
+      parameters:
+      - description: Deal ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Deal data to update. Optional fields can be omitted.
+        in: body
+        name: deal
+        required: true
+        schema:
+          $ref: '#/definitions/api.UpdateDealRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UpdateDealResponse'
+      summary: Update an existing deal
       tags:
       - deals
 swagger: "2.0"

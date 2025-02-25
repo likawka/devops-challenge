@@ -91,3 +91,30 @@ type CreateDealResponse struct {
 	Success bool        `json:"success" example:"true"`
 	Data    interface{} `json:"data"`
 }
+
+type UpdateDealRequest struct {
+	Title             *string  `json:"title,omitempty" example:"Updated Deal Title"`
+	Value             *string  `json:"value,omitempty" example:"10000"`
+	Label             []int    `json:"label,omitempty" example:"[1,2,3]"`
+	Currency          *string  `json:"currency,omitempty" example:"USD"`
+	UserID            *int     `json:"user_id,omitempty" example:"1"`
+	PersonID          *int     `json:"person_id,omitempty" example:"2"`
+	OrgID             *int     `json:"org_id,omitempty" example:"3"`
+	PipelineID        *int     `json:"pipeline_id,omitempty" example:"1"`
+	StageID           *int     `json:"stage_id,omitempty" example:"2"`
+	Status            *string  `json:"status,omitempty" example:"won"`
+	Channel           *int     `json:"channel,omitempty" example:"10"`
+	ChannelID         *string  `json:"channel_id,omitempty" example:"MarketingCampaign2025"`
+	WonTime           *string  `json:"won_time,omitempty" example:"2025-03-01 14:00:00"`
+	LostTime          *string  `json:"lost_time,omitempty" example:""`
+	CloseTime         *string  `json:"close_time,omitempty" example:"2025-03-05 18:30:00"`
+	ExpectedCloseDate *string  `json:"expected_close_date,omitempty" example:"2025-03-10"`
+	Probability       *float64 `json:"probability,omitempty" example:"75.5"`
+	LostReason        *string  `json:"lost_reason,omitempty" example:"Better offer from competitor"`
+	VisibleTo         *int     `json:"visible_to,omitempty" example:"3"`
+}
+
+type UpdateDealResponse struct {
+	Success bool        `json:"success" example:"true"`
+	Data    interface{} `json:"data"`
+}
