@@ -1,17 +1,17 @@
-
 # Software Engineering Intern DevOps home challenge
 
 ## Overview
 
-This project is a **Golang-based API** for managing deals, with a structured architecture following best practices. It supports  **RESTful API endpoints** ,  **Swagger documentation** , and  **Docker deployment** . The project also includes **CI/CD pipelines** for automated builds and deployments.
+This project is a **Golang-based API** for managing deals, with a structured architecture following best practices. It supports **RESTful API endpoints**, **Swagger documentation**, and **Docker deployment**. The project also includes **CI/CD pipelines** for automated builds and deployments.
 
 ## Features
 
-* **Versioned API Endpoints** (e.g., `/v1/deals`)
+* **Versioned API Endpoints** (e.g., `<span>/v1/deals</span>`)
 * **Swagger Documentation**
 * **Docker Support** for easy deployment
 * **Metrics Middleware** for logging API performance
 * **CI/CD Pipelines** using GitHub Actions
+* **Metrics** available at `/metrics`
 
 ## Project Structure
 
@@ -48,34 +48,44 @@ Ensure you have the following installed:
 ### 2. Running Locally
 
 1. **Clone the repository:**
-   ```sh
-   git clone https://github.com/your-repo/devops-challenge.git
+
+   ```
+   git clone https://github.com/likawka/devops-challenge.git
    cd devops-challenge
    ```
 2. **Set up environment variables:**
-   * Create a `.env` file in the project root and add the necessary variables, e.g.:
-     ```env
+
+   * Create a `<span>.env</span>` file in the project root and add the necessary variables, e.g.:
+     ```
      PIPEDRIVE_API_KEY=your_api_key_here
      ```
 3. **Run the application:**
-   ```sh
+
+   ```
    go mod tidy
    go run main.go
    ```
-4. **Swagger UI:** Open `http://localhost:8080/swagger/index.html`.
+
+   or with Bash:
+
+   ```
+   bash devRun.sh
+   ```
+4. **Swagger UI:** Open `<span>http://localhost:8080/swagger/index.html</span>`.
+5. **Metrics Endpoint:** Available at `<span>http://localhost:8080/metrics</span>`.
 
 ### 3. Running with Docker
 
-For  **Mac (M1/M2)** , ensure you build with the correct platform:
+For **Mac (M1/M2)**, ensure you build with the correct platform:
 
-```sh
+```
 docker build --platform=linux/arm64 -t devops-challenge .
 docker run -p 8080:8080 --env-file .env devops-challenge
 ```
 
 For general use:
 
-```sh
+```
 docker-compose up --build
 ```
 
@@ -97,9 +107,4 @@ The project includes **CI/CD automation** with GitHub Actions:
 ### 6. Author
 
 **Iryna Zinko**
-
 [LinkedIn](https://www.linkedin.com/in/iryna-zinko-143a4125b/)
-
----
-
-🚀 **Happy coding!**
