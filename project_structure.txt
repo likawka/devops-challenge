@@ -1,0 +1,20 @@
+.
+├── Dockerfile
+├── README.md
+├── api
+│   └── deals.go
+├── devRun.sh
+├── docs
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
+├── go.mod
+├── go.sum
+├── handlers
+│   ├── deals.go
+│   └── swagger.go
+├── main.go
+├── project_structure.txt
+└── ps.sh
+
+4 directories, 14 files

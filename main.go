@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/joho/godotenv"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -15,13 +17,13 @@ import (
 	"devops-challenge/handlers"
 )
 
-// Logger instance
+// Logger instance with JSON formatting
 var logger = logrus.New()
 
-// Create a new Prometheus registry (to disable default Go metrics)
+// Custom Prometheus registry (excluding default Go metrics)
 var customRegistry = prometheus.NewRegistry()
 
-// API-specific Prometheus metrics
+// Prometheus metrics for API requests
 var (
 	requestCount = prometheus.NewCounterVec(
 		prometheus.CounterOpts{
@@ -33,45 +35,55 @@ var (
 
 	requestDuration = prometheus.NewHistogramVec(
 		prometheus.HistogramOpts{
-			Name:    "api_request_duration_seconds",
-			Help:    "Histogram of API response time",
-			Buckets: prometheus.DefBuckets,
+			Name:    "api_request_duration_milliseconds",
+			Help:    "Histogram of API response time in milliseconds",
+			Buckets: prometheus.LinearBuckets(5, 10, 10), // Buckets from 5ms, increasing by 10ms
 		},
 		[]string{"method", "path"},
 	)
 )
 
 func init() {
-	// Set log format to JSON for better readability
-	logger.SetFormatter(&logrus.JSONFormatter{})
+	// Use JSON formatter for clean logging
+	logger.SetFormatter(&logrus.JSONFormatter{
+		PrettyPrint: true, // Makes logs easier to read
+	})
 
-	// Register only API metrics (skip default Go metrics)
+	// Register only API-specific metrics
 	customRegistry.MustRegister(requestCount, requestDuration)
 }
 
-// Middleware to track API metrics
+// Middleware to track API metrics with structured logging
 func MetricsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		start := time.Now()
 
-		// Process request
+		// Generate a unique request ID for tracking
+		requestID := uuid.New().String()
+		c.Set("requestID", requestID)
+
+		// Process the request
 		c.Next()
 
-		duration := time.Since(start).Seconds()
-		statusCode := fmt.Sprintf("%d", c.Writer.Status())
+		// Compute response time in milliseconds
+		duration := time.Since(start).Milliseconds()
+		statusCode := c.Writer.Status()
 
-		// Log API request details
+		// Log structured API request details
 		logger.WithFields(logrus.Fields{
-			"method":      c.Request.Method,
-			"path":        c.Request.URL.Path,
-			"status":      statusCode,
-			"latency_sec": duration,
-			"client_ip":   c.ClientIP(),
+			"request_id":   requestID,
+			"method":       c.Request.Method,
+			"path":         c.Request.URL.Path,
+			"status_code":  statusCode,
+			"latency_ms":   duration,
+			"client_ip":    c.ClientIP(),
+			"user_agent":   c.Request.UserAgent(),
+			"content_type": c.Request.Header.Get("Content-Type"),
 		}).Info("API request completed")
 
-		// Update Prometheus API metrics
-		requestCount.WithLabelValues(c.Request.Method, c.Request.URL.Path, statusCode).Inc()
-		requestDuration.WithLabelValues(c.Request.Method, c.Request.URL.Path).Observe(duration)
+		// Update Prometheus metrics
+		requestCount.WithLabelValues(c.Request.Method, c.Request.URL.Path, fmt.Sprintf("%d", statusCode)).Inc()
+		requestDuration.WithLabelValues(c.Request.Method, c.Request.URL.Path).Observe(float64(duration))
 	}
 }
 
@@ -99,7 +111,7 @@ func main() {
 
 	// Health check route
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{"status": "ok"})
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
 	// Define API routes
@@ -110,6 +122,7 @@ func main() {
 		apiV1.PUT("/deals/:id", handlers.UpdateDeal)
 	}
 
+	// Expose ONLY API-specific metrics
 	router.GET("/metrics", gin.WrapH(promhttp.HandlerFor(customRegistry, promhttp.HandlerOpts{})))
 
 	logger.Info("Server is running on port 8080...")
