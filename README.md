@@ -81,7 +81,7 @@ docker run -p 8080:8080 --env-file .env devops-challenge
 
 ### 4. Links
 
-* **GET /deals:** [http://localhost:8080/v1/deals](http://localhost:8080/deals)
+* **GET /deals:** [http://localhost:8080/v1/deals](http://localhost:8080/v1/deals)
 * **Swagger UI:** [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 * **Metrics:** [http://localhost:8080/metrics](http://localhost:8080/metrics)
 
