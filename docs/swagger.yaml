@@ -1,0 +1,252 @@
+definitions:
+  api.CreateDealRequest:
+    type: object
+  api.CreateDealResponse:
+    properties:
+      data: {}
+      success:
+        example: true
+        type: boolean
+    type: object
+  api.Deal:
+    properties:
+      active:
+        example: true
+        type: boolean
+      activities_count:
+        example: 1
+        type: integer
+      acv_currency:
+        example: EUR
+        type: string
+      add_time:
+        example: "2019-05-29 04:21:51"
+        type: string
+      arr_currency:
+        example: EUR
+        type: string
+      channel:
+        type: integer
+      channel_id:
+        type: string
+      close_time:
+        type: string
+      currency:
+        example: EUR
+        type: string
+      deleted:
+        example: false
+        type: boolean
+      done_activities_count:
+        example: 0
+        type: integer
+      email_messages_count:
+        example: 4
+        type: integer
+      expected_close_date:
+        example: "2019-06-29"
+        type: string
+      files_count:
+        example: 0
+        type: integer
+      first_won_time:
+        type: string
+      followers_count:
+        example: 0
+        type: integer
+      id:
+        example: 1
+        type: integer
+      label:
+        example: "11"
+        type: string
+      last_activity_date:
+        type: string
+      last_activity_id:
+        type: integer
+      last_incoming_mail_time:
+        type: string
+      last_outgoing_mail_time:
+        type: string
+      lost_reason:
+        type: string
+      lost_time:
+        type: string
+      mrr:
+        type: number
+      mrr_currency:
+        example: EUR
+        type: string
+      next_activity_date:
+        example: "2019-11-29"
+        type: string
+      next_activity_id:
+        type: integer
+      next_activity_time:
+        example: "11:30:00"
+        type: string
+      notes_count:
+        example: 2
+        type: integer
+      origin:
+        example: ManuallyCreated
+        type: string
+      participants_count:
+        example: 1
+        type: integer
+      pipeline_id:
+        example: 1
+        type: integer
+      probability:
+        type: integer
+      products_count:
+        example: 2
+        type: integer
+      stage_change_time:
+        example: "2019-11-28 15:41:22"
+        type: string
+      stage_id:
+        example: 2
+        type: integer
+      stage_order_nr:
+        type: integer
+      status:
+        example: open
+        type: string
+      title:
+        example: Deal One
+        type: string
+      undone_activities_count:
+        example: 1
+        type: integer
+      update_time:
+        example: "2019-11-28 16:19:50"
+        type: string
+      value:
+        example: 130
+        type: number
+      visible_to:
+        example: "1"
+        type: string
+      won_time:
+        type: string
+    type: object
+  api.GetAllDealsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/api.Deal'
+        type: array
+      success:
+        example: true
+        type: boolean
+    type: object
+  api.UpdateDealRequest:
+    type: object
+  api.UpdateDealResponse:
+    properties:
+      data: {}
+      success:
+        example: true
+        type: boolean
+    type: object
+info:
+  contact: {}
+paths:
+  /v1/deals:
+    get:
+      consumes:
+      - application/json
+      description: Fetches all deals from Pipedrive
+      parameters:
+      - example: 456
+        in: query
+        name: filter_id
+        type: integer
+      - example: 100
+        in: query
+        name: limit
+        type: integer
+      - example: 1
+        in: query
+        name: owned_by_you
+        type: integer
+      - example: update_time DESC
+        in: query
+        name: sort
+        type: string
+      - example: 2
+        in: query
+        name: stage_id
+        type: integer
+      - example: 0
+        in: query
+        name: start
+        type: integer
+      - example: open
+        in: query
+        name: status
+        type: string
+      - example: 123
+        in: query
+        name: user_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.GetAllDealsResponse'
+      summary: Get all deals
+      tags:
+      - deals
+    post:
+      consumes:
+      - application/json
+      description: Creates a new deal in Pipedrive
+      parameters:
+      - description: 'Deal data to be created. Required fields: title'
+        in: body
+        name: deal
+        required: true
+        schema:
+          $ref: '#/definitions/api.CreateDealRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/api.CreateDealResponse'
+      summary: Add a new deal
+      tags:
+      - deals
+  /v1/deals/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing deal in Pipedrive
+      parameters:
+      - description: Deal ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Deal data to update. Optional fields can be omitted.
+        in: body
+        name: deal
+        required: true
+        schema:
+          $ref: '#/definitions/api.UpdateDealRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.UpdateDealResponse'
+      summary: Update an existing deal
+      tags:
+      - deals
+swagger: "2.0"
