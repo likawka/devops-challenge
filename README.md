@@ -71,8 +71,6 @@ Ensure you have the following installed:
    ```
    bash devRun.sh
    ```
-4. **Swagger UI:** Open `http://localhost:8080/swagger/index.html`
-5. **Metrics Endpoint:** Available at `http://localhost:8080/metrics`
 
 ### 3. Running with Docker
 
@@ -81,13 +79,11 @@ docker build --platform=linux/arm64 -t devops-challenge .
 docker run -p 8080:8080 --env-file .env devops-challenge
 ```
 
-### 4. API Documentation
+### 4. Links
 
-Swagger documentation is automatically generated. After running the server, visit:
-
-```
-http://localhost:8080/swagger/index.html
-```
+* **GET /deals:** [http://localhost:8080/v1/deals](http://localhost:8080/deals)
+* **Swagger UI:** [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
+* **Metrics:** [http://localhost:8080/metrics](http://localhost:8080/metrics)
 
 ### 5. CI/CD Pipelines
 
@@ -96,7 +92,15 @@ The project includes **CI/CD automation** with GitHub Actions:
 * **Continuous Integration (CI):** Runs tests and lints the code.
 * **Continuous Deployment (CD):** Builds and deploys the application automatically.
 
-### 6. Author
+### 6.  Testing
+
+Unit tests for endpoint handlers are located in `handlers/deals_test.go`. To run the tests:
+
+```shell
+go test ./...
+```
+
+### 7. Author
 
 **Iryna Zinko**
 [LinkedIn](https://www.linkedin.com/in/iryna-zinko-143a4125b/)
