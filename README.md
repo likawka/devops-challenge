@@ -55,7 +55,7 @@ Ensure you have the following installed:
    ```
 2. **Set up environment variables:**
 
-   * Create a `<span>.env</span>` file in the project root and add the necessary variables, e.g.:
+   * Create a `.env` file in the project root and add the necessary variables, e.g.:
      ```
      PIPEDRIVE_API_KEY=your_api_key_here
      ```
@@ -71,22 +71,14 @@ Ensure you have the following installed:
    ```
    bash devRun.sh
    ```
-4. **Swagger UI:** Open `<span>http://localhost:8080/swagger/index.html</span>`.
-5. **Metrics Endpoint:** Available at `<span>http://localhost:8080/metrics</span>`.
+4. **Swagger UI:** Open `http://localhost:8080/swagger/index.html`
+5. **Metrics Endpoint:** Available at `http://localhost:8080/metrics`
 
 ### 3. Running with Docker
-
-For **Mac (M1/M2)**, ensure you build with the correct platform:
 
 ```
 docker build --platform=linux/arm64 -t devops-challenge .
 docker run -p 8080:8080 --env-file .env devops-challenge
-```
-
-For general use:
-
-```
-docker-compose up --build
 ```
 
 ### 4. API Documentation
