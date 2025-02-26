@@ -6,7 +6,7 @@ This project is a **Golang-based API** for managing deals, with a structured arc
 
 ## Features
 
-* **Versioned API Endpoints** (e.g., `<span>/v1/deals</span>`)
+* **Versioned API Endpoints** (e.g., `/v1/deals`)
 * **Swagger Documentation**
 * **Docker Support** for easy deployment
 * **Metrics Middleware** for logging API performance
@@ -43,7 +43,7 @@ README.md            # Project documentation
 Ensure you have the following installed:
 
 * **Golang** (1.21)
-* **Docker** & **Docker Compose**
+* **Docker**
 
 ### 2. Running Locally
 
