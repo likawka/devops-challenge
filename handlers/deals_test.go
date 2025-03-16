@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"bytes"
+	"devops-challenge/api"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -142,4 +144,77 @@ func TestGetDeal(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, true, response["success"])
 	assert.NotNil(t, response["data"])
+}
+
+
+
+
+// =======================
+// Integration Tests
+// =======================
+
+
+func TestGetAllDealsIntegration(t *testing.T) {
+	os.Setenv("PIPEDRIVE_API_KEY", "your_api_key")
+	r := gin.Default()
+	r.GET("/v1/deals", GetAllDeals)
+
+	req, _ := http.NewRequest("GET", "/v1/deals", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+
+	var response api.GetAllDealsResponse
+	err := json.Unmarshal(resp.Body.Bytes(), &response)
+	assert.NoError(t, err)
+	assert.True(t, response.Success)
+	fmt.Println("GetAllDeals response:", response)
+}
+
+func TestCreateDealIntegration(t *testing.T) {
+	os.Setenv("PIPEDRIVE_API_KEY", "your_api_key")
+	r := gin.Default()
+	r.POST("/v1/deals", CreateDeal)
+
+	dealRequest := api.CreateDealRequest{
+		Title: "Test Deal",
+	}
+	body, _ := json.Marshal(dealRequest)
+	req, _ := http.NewRequest("POST", "/v1/deals", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusCreated, resp.Code)
+
+	var response api.CreateDealResponse
+	err := json.Unmarshal(resp.Body.Bytes(), &response)
+	assert.NoError(t, err)
+	assert.True(t, response.Success)
+	fmt.Println("CreateDeal response:", response)
+}
+
+func TestUpdateDealIntegration(t *testing.T) {
+	os.Setenv("PIPEDRIVE_API_KEY", "your_api_key")
+	r := gin.Default()
+	r.PUT("/v1/deals/:id", UpdateDeal)
+
+	dealRequest := api.CreateDealRequest{
+		Title: "Test Deal Upd",
+	}
+
+	body, _ := json.Marshal(dealRequest)
+	req, _ := http.NewRequest("PUT", "/v1/deals/1", bytes.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+
+	assert.Equal(t, http.StatusOK, resp.Code)
+
+	var response api.UpdateDealResponse
+	err := json.Unmarshal(resp.Body.Bytes(), &response)
+	assert.NoError(t, err)
+	assert.True(t, response.Success)
+	fmt.Println("UpdateDeal response:", response)
 }
