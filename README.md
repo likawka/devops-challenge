@@ -79,6 +79,11 @@ docker build --platform=linux/arm64 -t devops-challenge .
 docker run -p 8080:8080 --env-file .env devops-challenge
 ```
 
+### 3.5 Running Services with Docker Compose
+To build and start all services in containers, use the following command:
+```
+docker compose up -d --build
+```
 ### 4. Links
 
 * **GET /deals:** [http://localhost:8080/v1/deals](http://localhost:8080/v1/deals)
